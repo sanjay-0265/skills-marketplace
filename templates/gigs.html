@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Gigs</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Available Gigs</h1>
+        <button onclick="logout()">Logout</button>
+    </header>
+
+    <div class="container">
+        <ul id="gigs-list"></ul>
+    </div>
+
+    <script>
+        function fetchGigs() {
+            fetch("/gigs")
+            .then(response => response.json())
+            .then(data => {
+                const gigsList = document.getElementById("gigs-list");
+                gigsList.innerHTML = "";
+                data.forEach(gig => {
+                    const li = document.createElement("li");
+                    li.innerHTML = `<h3>${gig.title}</h3><p>${gig.description}</p><strong>Price: $${gig.price}</strong>`;
+                    gigsList.appendChild(li);
+                });
+            })
+            .catch(error => console.error("Error fetching gigs:", error));
+        }
+
+        function logout() {
+            window.location.href = "/static/index.html";
+        }
+
+        fetchGigs();
+    </script>
+
+</body>
+</html>
